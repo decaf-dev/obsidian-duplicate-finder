@@ -1,0 +1,11 @@
+{
+	"id": "duplicate-finder",
+	"name": "Duplicate Finder",
+	"version": "0.0.1",
+	"minAppVersion": "1.8.0",
+	"description": "Find duplicate content in your vault",
+	"author": "DecafDev",
+	"authorUrl": "https://github.com/decaf-dev",
+	"fundingUrl": "https://ko-fi.com/decaf_dev",
+	"isDesktopOnly": true
+}
