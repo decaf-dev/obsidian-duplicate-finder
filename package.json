@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-duplicate-finder",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "Search for duplicate content in your vault",
 	"main": "main.js",
 	"scripts": {
