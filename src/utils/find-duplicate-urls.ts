@@ -8,9 +8,11 @@ export const findDuplicateUrls = async (
 
 	for (const file of files) {
 		const content = await app.vault.cachedRead(file);
+
 		const matches = matchUrls(content);
 		if (matches) {
-			for (const url of matches) {
+			const uniqueMatches = new Set(matches);
+			for (const url of uniqueMatches) {
 				if (!urlMap.has(url)) {
 					urlMap.set(url, []);
 				}
