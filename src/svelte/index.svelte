@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { debounce } from "lodash";
 	import { Menu, type App } from "obsidian";
 	import { deleteFile } from "src/utils/delete-file";
 	import { findDuplicateUrls } from "src/utils/find-duplicate-urls";
@@ -11,7 +12,28 @@
 
 	const { obsidianApp }: AppProps = $props();
 
-	let duplicateUrls: Map<string, string[]> = $state(new Map());
+	let duplicateUrlMap: Map<string, string[]> = $state(new Map());
+	let searchValue = $state("");
+
+	let filteredDuplicateUrlMap = $derived(
+		new Map(
+			Array.from(duplicateUrlMap.entries()).filter(([_, files]) =>
+				files.some((file) =>
+					file.toLowerCase().includes(searchValue.toLowerCase()),
+				),
+			),
+		),
+	);
+
+	let duplicateUrlCount = $derived(
+		Array.from(filteredDuplicateUrlMap.entries()).filter(
+			([_, files]) => files.length > 1,
+		).length,
+	);
+
+	const handleInputChange = debounce((event: Event) => {
+		searchValue = (event.target as HTMLInputElement).value;
+	}, 100);
 
 	function handleItemClick(filePath: string) {
 		openInNewTab(obsidianApp, filePath, true);
@@ -33,28 +55,29 @@
 			item.setTitle("Delete file");
 			item.onClick(async () => {
 				await deleteFile(obsidianApp, filePath);
-				duplicateUrls = await findDuplicateUrls(obsidianApp);
+				duplicateUrlMap = await findDuplicateUrls(obsidianApp);
 			});
 		});
 		menu.showAtMouseEvent(event);
 	}
 
 	onMount(async () => {
-		duplicateUrls = await findDuplicateUrls(obsidianApp);
+		duplicateUrlMap = await findDuplicateUrls(obsidianApp);
 	});
-
-	let duplicateUrlCount = $derived(
-		Array.from(duplicateUrls.entries()).filter(
-			([_, files]) => files.length > 1,
-		).length,
-	);
 </script>
 
 <div>
 	<h1>Duplicate Finder</h1>
 	<p>Duplicate URLs: {duplicateUrlCount}</p>
+	<input
+		type="search"
+		placeholder="Filter by file name..."
+		value={searchValue}
+		oninput={handleInputChange}
+	/>
+	<hr />
 	<div class="accordion-list-container">
-		{#each Array.from(duplicateUrls.entries()) as [url, files]}
+		{#each Array.from(filteredDuplicateUrlMap.entries()) as [url, files]}
 			{#if files.length > 1}
 				<div class="accordion">
 					<details>
@@ -86,6 +109,10 @@
 <style>
 	h1 {
 		font-size: 2rem;
+	}
+
+	hr {
+		margin: 1.1rem 0;
 	}
 
 	.accordion-item {
