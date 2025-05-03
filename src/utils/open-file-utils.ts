@@ -6,7 +6,11 @@ export const openToTheRight = (app: App, filePath: string) => {
 	});
 };
 
-export const openInNewTab = async (app: App, filePath: string) => {
+export const openInNewTab = async (
+	app: App,
+	filePath: string,
+	active: boolean
+) => {
 	const isOpen = app.workspace.getLeavesOfType("markdown").some((leaf) => {
 		const viewState = leaf.getViewState();
 		return viewState.state?.file === filePath;
@@ -17,6 +21,6 @@ export const openInNewTab = async (app: App, filePath: string) => {
 	}
 
 	app.workspace.openLinkText(filePath, "", "tab", {
-		active: false,
+		active,
 	});
 };

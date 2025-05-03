@@ -13,7 +13,7 @@
 	let duplicateUrls: Map<string, string[]> = $state(new Map());
 
 	function handleItemClick(filePath: string) {
-		openInNewTab(obsidianApp, filePath);
+		openInNewTab(obsidianApp, filePath, true);
 	}
 
 	function handleItemContextMenuClick(event: MouseEvent, filePath: string) {
@@ -21,7 +21,7 @@
 		menu.setUseNativeMenu(true);
 		menu.addItem((item) => {
 			item.setTitle("Open in new tab");
-			item.onClick(() => openInNewTab(obsidianApp, filePath));
+			item.onClick(() => openInNewTab(obsidianApp, filePath, false));
 		});
 		menu.addItem((item) => {
 			item.setTitle("Open to the right");
@@ -44,7 +44,7 @@
 <div>
 	<h1>Duplicate Finder</h1>
 	<p>Duplicate URLs: {duplicateUrlCount}</p>
-	<div class="accordion-container">
+	<div class="accordion-list-container">
 		{#each Array.from(duplicateUrls.entries()) as [url, files]}
 			{#if files.length > 1}
 				<div class="accordion">
@@ -88,7 +88,11 @@
 		background-color: var(--background-modifier-hover);
 	}
 
-	.accordion-container {
+	summary {
+		padding-bottom: 6px;
+	}
+
+	.accordion-list-container {
 		display: flex;
 		flex-direction: column;
 		gap: 16px;
