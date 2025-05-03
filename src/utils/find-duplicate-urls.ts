@@ -18,7 +18,11 @@ export const findDuplicateUrls = async (
 			}
 		}
 	}
-	return urlMap;
+
+	const sortedUrlMap = new Map(
+		[...urlMap.entries()].sort((a, b) => a[0].localeCompare(b[0]))
+	);
+	return sortedUrlMap;
 };
 
 const matchUrls = (content: string) => {
