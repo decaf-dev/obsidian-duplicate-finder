@@ -1,10 +1,4 @@
-import type { App } from "obsidian";
-
-export const openToTheRight = (app: App, filePath: string) => {
-	app.workspace.openLinkText(filePath, "", "split", {
-		active: false,
-	});
-};
+import { type App } from "obsidian";
 
 export const openInNewTab = async (
 	app: App,
@@ -22,5 +16,11 @@ export const openInNewTab = async (
 
 	app.workspace.openLinkText(filePath, "", "tab", {
 		active,
+	});
+};
+
+export const openToTheRight = (app: App, filePath: string) => {
+	app.workspace.openLinkText(filePath, "", "split", {
+		active: false,
 	});
 };

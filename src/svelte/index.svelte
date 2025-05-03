@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Menu, type App } from "obsidian";
+	import { deleteFile } from "src/utils/delete-file";
 	import { findDuplicateUrls } from "src/utils/find-duplicate-urls";
-	import { openInNewTab, openToTheRight } from "src/utils/open-file-utils";
+	import { openInNewTab, openToTheRight } from "src/utils/open-file";
 	import { onMount } from "svelte";
 
 	interface AppProps {
@@ -26,6 +27,14 @@
 		menu.addItem((item) => {
 			item.setTitle("Open to the right");
 			item.onClick(() => openToTheRight(obsidianApp, filePath));
+		});
+		menu.addSeparator();
+		menu.addItem((item) => {
+			item.setTitle("Delete file");
+			item.onClick(async () => {
+				await deleteFile(obsidianApp, filePath);
+				duplicateUrls = await findDuplicateUrls(obsidianApp);
+			});
 		});
 		menu.showAtMouseEvent(event);
 	}
