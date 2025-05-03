@@ -11,6 +11,13 @@ This plugin allows you to find duplicate content in your vault
 5. Enter the repository url: **https://github.com/decaf-dev/obsidian-duplicate-finder**
 6. Click **Add plugin**
 
+## Configuration
+
+To be able to "Open in new tab" without focusing it, you will need to disable **Always focus new tabs**
+
+1. Go to **Settings**
+2. Click **Editor**
+3. Disable **Always focus new tabs**
 
 ## License
 
