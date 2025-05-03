@@ -14,7 +14,7 @@ export const findDuplicateUrls = async (
 				if (!urlMap.has(url)) {
 					urlMap.set(url, []);
 				}
-				urlMap.get(url)?.push(file.basename);
+				urlMap.get(url)?.push(file.path);
 			}
 		}
 	}
